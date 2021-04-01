@@ -1,0 +1,13 @@
+- name: Ensure Apache is deployed
+  hosts: web_servers
+  force_handlers: True
+
+  roles:
+    # The "apache" role has a dependency on the "firewall" role.
+    # The "firewall" role requires a "firewall_rules" variable be defined.
+    - role: apache
+      firewall_rules:
+        # Allow http requests from the load_balancer.
+        - zone: internal
+          service: http
+          source: "172.25.250.10"
